@@ -1,6 +1,7 @@
 import React from "react";
 import { BiFileBlank, BiSave, BiTrash } from "react-icons/bi";
 import styled from "styled-components";
+import { FileContext } from "../context/FileContext";
 
 const Head = styled.header`
   height: 60px;
@@ -14,13 +15,18 @@ const Head = styled.header`
   }
 `;
 
-const Menu = styled.button`
+const Input = styled.input.attrs({ type: "file" })`
+  display: none;
+`;
+
+const Menu = styled.label`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100%;
   width: 70px;
   background-color: #35383f;
+  cursor: pointer;
   &:before {
     content: "";
     display: inline-block;
@@ -143,16 +149,20 @@ const SaveText = styled.span`
 `;
 
 const Header = () => {
+  const { fileName, readFile } = React.useContext(FileContext);
+
   return (
     <Head>
-      <Menu />
+      <Menu onChange={readFile} htmlFor="md">
+        <Input id="md" />
+      </Menu>
       <Info>
         <Markdown>Markdown</Markdown>
         <Doc>
           <BiFileBlank size={20} color="white" />
           <DocInfo>
             <DocLabel>Document Name</DocLabel>
-            <DocTitle>Teste.md</DocTitle>
+            <DocTitle>{fileName}</DocTitle>
           </DocInfo>
         </Doc>
       </Info>
