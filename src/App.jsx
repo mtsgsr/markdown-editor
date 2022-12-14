@@ -2,15 +2,18 @@ import React from "react";
 import { ThemeProvider } from "styled-components";
 import GlobalStyle from "./styles/globalStyle";
 import { lightTheme, darkTheme } from "./styles/themes";
+import { FileStorage } from "./context/FileContext";
 import Header from "./components/Header";
+import Markdown from "./components/Markdown";
 
 function App() {
   return (
     <ThemeProvider theme={darkTheme}>
-      <div className="App">
+      <FileStorage>
         <GlobalStyle />
         <Header />
-      </div>
+        <Markdown />
+      </FileStorage>
     </ThemeProvider>
   );
 }
