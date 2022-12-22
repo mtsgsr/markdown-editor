@@ -1,5 +1,5 @@
 import React from "react";
-import { BiFileBlank, BiSave, BiTrash } from "react-icons/bi";
+import { MdDescription, MdDelete, MdSaveAlt } from "react-icons/md";
 import styled from "styled-components";
 import { FileContext } from "../context/FileContext";
 
@@ -9,17 +9,13 @@ const Head = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1.5rem;
-  @media (max-width: 300px) {
-    gap: 0.5rem;
+  gap: 0.5rem;
+  @media (min-width: 640px) {
+    gap: 1.5rem;
   }
 `;
 
-const Input = styled.input.attrs({ type: "file" })`
-  display: none;
-`;
-
-const Menu = styled.label`
+const MenuBtn = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,12 +29,19 @@ const Menu = styled.label`
     height: 2px;
     width: 25px;
     background-color: ${({ theme }) => theme.menu};
-    box-shadow: 0 6px ${({ theme }) => theme.menu},
-      0 -6px ${({ theme }) => theme.menu};
+    box-shadow: 0 7px ${({ theme }) => theme.menu},
+      0 -7px ${({ theme }) => theme.menu};
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.hover};
+  }
+  &:active {
+    background-color: ${({ theme }) => theme.hover};
+    transform: translateY(1px);
   }
 `;
 
-const Info = styled.div`
+const HeadInfo = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
@@ -46,7 +49,7 @@ const Info = styled.div`
   gap: 2rem;
 `;
 
-const Markdown = styled.h1`
+const Wordmark = styled.h1`
   display: none;
   color: ${({ theme }) => theme.text};
   font-weight: bold;
@@ -57,7 +60,7 @@ const Markdown = styled.h1`
   }
 `;
 
-const Doc = styled.div`
+const Document = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -69,7 +72,7 @@ const Doc = styled.div`
     left: -18px;
     height: 50px;
     width: 1px;
-    background-color: #444;
+    background-color: ${({ theme }) => theme.border};
   }
   @media (min-width: 1024px) {
     &:before {
@@ -78,12 +81,12 @@ const Doc = styled.div`
   }
 `;
 
-const DocInfo = styled.div`
+const Description = styled.div`
   display: flex;
   flex-direction: column;
 `;
 
-const DocLabel = styled.p`
+const Label = styled.label`
   display: none;
   color: #aaa;
   font-size: 1rem;
@@ -95,9 +98,10 @@ const DocLabel = styled.p`
   }
 `;
 
-const DocTitle = styled.p`
+const Title = styled.p`
   font-size: 1.1rem;
   color: ${({ theme }) => theme.text};
+  border: none;
   @media (min-width: 640) {
     font-size: 1rem;
   }
@@ -106,23 +110,41 @@ const DocTitle = styled.p`
   }
 `;
 
+const DocInput = styled.input.attrs({ type: "text" })`
+  background-color: ${({ theme }) => theme.header};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
+  outline: none;
+  color: ${({ theme }) => theme.text};
+  width: 100%;
+`;
+
 const Buttons = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
-  margin-right: 1rem;
-  @media (max-width: 300px) {
-    margin-right: 0.5rem;
-    gap: 0.5rem;
+  margin-right: 0.5rem;
+  gap: 0.5rem;
+  @media (min-width: 640px) {
+    margin-right: 1rem;
+    gap: 1rem;
   }
 `;
 
 const Trash = styled.a`
   color: #aaa;
-  padding: 0.5rem 1rem;
-  @media (max-width: 300px) {
-    padding: 0.25rem 0.5rem;
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  @media (min-width: 640px) {
+    padding: 0.5rem 1rem;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.hover};
+    border-radius: 4px;
+  }
+  &:active {
+    background-color: ${({ theme }) => theme.hover};
+    border-radius: 4px;
+    transform: translateY(1px);
   }
 `;
 
@@ -131,12 +153,19 @@ const SaveBtn = styled.button`
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.5rem 1rem;
   border-radius: 4px;
   color: ${({ theme }) => theme.menu};
   background-color: ${({ theme }) => theme.accent};
-  @media (max-width: 300px) {
-    padding: 0.25rem 0.5rem;
+  padding: 0.25rem 0.5rem;
+  @media (min-width: 640px) {
+    padding: 0.5rem 1rem;
+  }
+  &:hover {
+    background-color: #e68050;
+  }
+  &:active {
+    background-color: #e68050;
+    transform: translateY(1px);
   }
 `;
 
@@ -149,30 +178,44 @@ const SaveText = styled.span`
 `;
 
 const Header = () => {
-  const { fileName, readFile } = React.useContext(FileContext);
+  const {
+    fileOpened,
+    fileName,
+    setFileName,
+    openFile,
+    saveFile,
+    deleteFile,
+    supported,
+  } = React.useContext(FileContext);
 
   return (
     <Head>
-      <Menu onChange={readFile} htmlFor="md">
-        <Input id="md" />
-      </Menu>
-      <Info>
-        <Markdown>Markdown</Markdown>
-        <Doc>
-          <BiFileBlank size={20} color="white" />
-          <DocInfo>
-            <DocLabel>Document Name</DocLabel>
-            <DocTitle>{fileName}</DocTitle>
-          </DocInfo>
-        </Doc>
-      </Info>
+      <MenuBtn onClick={openFile} />
+      <HeadInfo>
+        <Wordmark>quick md</Wordmark>
+        <Document>
+          <MdDescription size={25} color="white" />
+          <Description>
+            <Label id="docLabel">Document Name</Label>
+            {fileOpened === false || supported === false ? (
+              <DocInput
+                value={fileName}
+                onChange={({ target }) => setFileName(target.value)}
+                aria-labelledby="docLabel"
+              />
+            ) : (
+              <Title>{fileName}</Title>
+            )}
+          </Description>
+        </Document>
+      </HeadInfo>
       <Buttons>
-        <Trash href="#">
-          <BiTrash size={25} />
+        <Trash onClick={deleteFile}>
+          <MdDelete size={25} />
         </Trash>
-        <SaveBtn>
-          <BiSave size={25} />
-          <SaveText>Save Changes</SaveText>
+        <SaveBtn onClick={saveFile}>
+          <MdSaveAlt size={25} />
+          <SaveText>{supported ? "Save" : "Export"}</SaveText>
         </SaveBtn>
       </Buttons>
     </Head>
