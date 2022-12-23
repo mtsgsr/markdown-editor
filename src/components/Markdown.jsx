@@ -3,40 +3,8 @@ import styled from "styled-components";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import "github-markdown-css";
-import { BsEye } from "react-icons/bs";
+import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { FileContext } from "../context/FileContext";
-
-const Headings = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  background-color: ${({ theme }) => theme.headings};
-  height: 50px;
-  padding: 0 1rem;
-`;
-
-const MdHeadingText = styled.p`
-  color: ${({ theme }) => theme.text};
-`;
-
-const PreviewHeading = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: ${({ theme }) => theme.headings};
-  @media (min-width: 1024px) {
-    width: 50%;
-  }
-`;
-
-const PreviewHeadingText = styled.p`
-  display: none;
-  color: ${({ theme }) => theme.text};
-  @media (min-width: 1024px) {
-    display: block;
-  }
-`;
 
 const Main = styled.main`
   display: grid;
@@ -47,87 +15,154 @@ const Main = styled.main`
   }
 `;
 
-const MdSection = styled.section`
+const MdHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background-color: ${({ theme }) => theme.headings};
+  height: 50px;
+  padding: 0 1rem;
+  border-width: 1px 0 1px 0;
+  border-color: ${({ theme }) => theme.border};
+`;
+
+const PrevHeading = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  background-color: ${({ theme }) => theme.headings};
+  height: 50px;
+  padding: 0 1rem;
+  border-width: 1px 0 1px 0;
+  border-color: ${({ theme }) => theme.border};
+  @media (min-width: 1024px) {
+    border-left: 1px solid ${({ theme }) => theme.border};
+  }
+`;
+
+const HeadingText = styled.p`
+  color: ${({ theme }) => theme.text};
+`;
+
+const Section = styled.section`
   display: ${(props) => props.display || "grid"};
+  height: inherit;
   background-color: ${({ theme }) => theme.background};
 `;
 
 const MdTextArea = styled.textarea`
-  resize: none;
-  outline: none;
+  height: inherit;
   padding: 1rem;
   background-color: ${({ theme }) => theme.background};
   color: ${({ theme }) => theme.text};
-  border-right: 1px solid #444;
+  resize: none;
+  outline: none;
 `;
 
-const PreviewAside = styled.aside`
+const Aside = styled.aside`
   display: ${(props) => props.display || "none"};
   height: inherit;
   @media (min-width: 1024px) {
-    display: grid;
+    display: ${(props) => props.default || "grid"};
   }
 `;
 
 const Preview = styled.div`
   padding: 1rem;
+  height: inherit;
   background-color: ${({ theme }) => theme.background};
   color: ${({ theme }) => theme.text};
   overflow: auto;
+  @media (min-width: 1024px) {
+    border-left: 1px solid ${({ theme }) => theme.border};
+  }
+`;
+
+const Eye = styled.div`
+  color: ${({ theme }) => theme.text};
+  cursor: pointer;
+  padding: 0.25rem 0.5rem;
+  @media (min-width: 640px) {
+    padding: 0.5rem 1rem;
+  }
+  &:hover {
+    background-color: ${({ theme }) => theme.hover};
+    border-radius: 4px;
+  }
+  &:active {
+    background-color: ${({ theme }) => theme.hover};
+    border-radius: 4px;
+    transform: translateY(1px);
+  }
 `;
 
 const Markdown = () => {
-  const [markdown, setMarkdown] = React.useState();
-  const [windowHeight, setWindowHeight] = React.useState(0);
-  const [eye, setEye] = React.useState(false);
-  const { fileResult } = React.useContext(FileContext);
+  const [windowWidth, setWindowWidth] = React.useState(window.innerWidth);
+  const [windowHeight, setWindowHeight] = React.useState(window.innerHeight);
+  const [visibility, setVisibility] = React.useState(false);
+  const { markdown, setMarkdown } = React.useContext(FileContext);
 
   React.useEffect(() => {
     const windowResize = () => {
+      setWindowWidth(window.innerWidth);
       setWindowHeight(window.innerHeight);
-      setEye(false);
     };
 
-    window.addEventListener("load", setWindowHeight(window.innerHeight));
+    window.addEventListener("load", windowResize);
     window.addEventListener("resize", windowResize);
 
     return () => {
-      window.removeEventListener("load", setWindowHeight(window.innerHeight));
+      window.removeEventListener("load", windowResize);
       window.removeEventListener("resize", windowResize);
     };
-  }, [windowHeight]);
+  }, [windowWidth, windowHeight]);
 
   React.useEffect(() => {
-    setMarkdown(fileResult);
-  }, [fileResult]);
+    setMarkdown(markdown);
+  }, [markdown]);
 
   return (
-    <>
-      <Headings>
-        <MdHeadingText>Markdown</MdHeadingText>
-        <PreviewHeading>
-          <PreviewHeadingText>Preview</PreviewHeadingText>
-          <BsEye
-            size={25}
-            onClick={() => setEye(!eye)}
-            style={{ cursor: "pointer" }}
-          />
-        </PreviewHeading>
-      </Headings>
-      <Main height={windowHeight - 110 + "px"}>
-        <MdSection display={eye ? "none" : null}>
-          <MdTextArea
-            value={markdown}
-            onChange={({ target }) => setMarkdown(target.value)}
-          />
-        </MdSection>
-        <PreviewAside display={eye ? "grid" : null}>
-          <Preview className="markdown-body">
-            <ReactMarkdown children={markdown} remarkPlugins={[remarkGfm]} />
-          </Preview>
-        </PreviewAside>
-      </Main>
-    </>
+    <Main height={windowHeight - 110 + "px"}>
+      <Section display={windowWidth < 1024 && visibility ? "none" : null}>
+        <MdHeading>
+          <HeadingText>Markdown</HeadingText>
+          {windowWidth < 1024 && visibility === false ? (
+            <Eye onClick={() => setVisibility(!visibility)}>
+              <MdVisibility size={25} />
+            </Eye>
+          ) : (
+            ""
+          )}
+          {windowWidth > 1024 && visibility === true ? (
+            <Eye onClick={() => setVisibility(!visibility)}>
+              <MdVisibility size={25} />
+            </Eye>
+          ) : (
+            ""
+          )}
+        </MdHeading>
+        <MdTextArea
+          value={markdown}
+          onChange={({ target }) => setMarkdown(target.value)}
+        />
+      </Section>
+      <Aside
+        display={visibility ? "grid" : null}
+        default={visibility ? "none" : null}
+      >
+        <PrevHeading>
+          <HeadingText>Preview</HeadingText>
+          <Eye onClick={() => setVisibility(!visibility)}>
+            <MdVisibilityOff size={25} />
+          </Eye>
+        </PrevHeading>
+        <Preview className="markdown-body">
+          <ReactMarkdown children={markdown} remarkPlugins={[remarkGfm]} />
+        </Preview>
+      </Aside>
+    </Main>
   );
 };
 
