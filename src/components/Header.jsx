@@ -51,7 +51,7 @@ const HeadInfo = styled.div`
 
 const Wordmark = styled.h1`
   display: none;
-  color: ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.title};
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
@@ -65,14 +65,15 @@ const Document = styled.div`
   align-items: center;
   gap: 1rem;
   position: relative;
+  color: ${({ theme }) => theme.title};
   &:before {
     content: "";
     display: none;
     position: absolute;
     left: -18px;
-    height: 50px;
+    height: 40px;
     width: 1px;
-    background-color: ${({ theme }) => theme.border};
+    background-color: ${({ theme }) => theme.separator};
   }
   @media (min-width: 1024px) {
     &:before {
@@ -100,7 +101,7 @@ const Label = styled.label`
 
 const Title = styled.p`
   font-size: 1.1rem;
-  color: ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.title};
   border: none;
   @media (min-width: 640) {
     font-size: 1rem;
@@ -112,9 +113,9 @@ const Title = styled.p`
 
 const DocInput = styled.input.attrs({ type: "text" })`
   background-color: ${({ theme }) => theme.header};
-  border-bottom: 1px solid ${({ theme }) => theme.border};
+  border-bottom: 1px solid ${({ theme }) => theme.separator};
   outline: none;
-  color: ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.title};
   width: 100%;
 `;
 
@@ -194,7 +195,7 @@ const Header = () => {
       <HeadInfo>
         <Wordmark>quick md</Wordmark>
         <Document>
-          <MdDescription size={25} color="white" />
+          <MdDescription size={25} />
           <Description>
             <Label id="docLabel">Document Name</Label>
             {fileOpened === false || supported === false ? (
