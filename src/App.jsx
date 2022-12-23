@@ -7,8 +7,19 @@ import Header from "./components/Header";
 import Markdown from "./components/Markdown";
 
 function App() {
+  const [theme, setTheme] = React.useState(lightTheme);
+
+  React.useEffect(() => {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
+    ) {
+      setTheme(darkTheme);
+    }
+  }, []);
+
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <FileStorage>
         <GlobalStyle />
         <Header />
