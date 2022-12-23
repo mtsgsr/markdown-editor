@@ -23,8 +23,7 @@ const MdHeading = styled.div`
   background-color: ${({ theme }) => theme.headings};
   height: 50px;
   padding: 0 1rem;
-  border-width: 1px 0 1px 0;
-  border-color: ${({ theme }) => theme.border};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
 `;
 
 const PrevHeading = styled.div`
@@ -35,8 +34,7 @@ const PrevHeading = styled.div`
   background-color: ${({ theme }) => theme.headings};
   height: 50px;
   padding: 0 1rem;
-  border-width: 1px 0 1px 0;
-  border-color: ${({ theme }) => theme.border};
+  border-bottom: 1px solid ${({ theme }) => theme.border};
   @media (min-width: 1024px) {
     border-left: 1px solid ${({ theme }) => theme.border};
   }
@@ -73,7 +71,6 @@ const Preview = styled.div`
   padding: 1rem;
   height: inherit;
   background-color: ${({ theme }) => theme.background};
-  color: ${({ theme }) => theme.text};
   overflow: auto;
   @media (min-width: 1024px) {
     border-left: 1px solid ${({ theme }) => theme.border};
@@ -88,11 +85,11 @@ const Eye = styled.div`
     padding: 0.5rem 1rem;
   }
   &:hover {
-    background-color: ${({ theme }) => theme.hover};
+    background-color: ${({ theme }) => theme.hoverEye};
     border-radius: 4px;
   }
   &:active {
-    background-color: ${({ theme }) => theme.hover};
+    background-color: ${({ theme }) => theme.hoverEye};
     border-radius: 4px;
     transform: translateY(1px);
   }
