@@ -132,7 +132,7 @@ const Buttons = styled.div`
   }
 `;
 
-const Trash = styled.a`
+const Trash = styled.button`
   color: #aaa;
   cursor: pointer;
   padding: 0.25rem 0.5rem;
@@ -198,7 +198,7 @@ const Header = () => {
 
   return (
     <Head>
-      <MenuBtn onClick={openFile} />
+      <MenuBtn onClick={openFile} aria-label="menu" />
       <HeadInfo>
         <Wordmark>quick md</Wordmark>
         <Document>
@@ -218,12 +218,14 @@ const Header = () => {
         </Document>
       </HeadInfo>
       <Buttons>
-        <Trash onClick={deleteFile}>
+        <Trash onClick={deleteFile} aria-label="trash">
           <MdDelete size={25} />
         </Trash>
-        <SaveBtn onClick={saveFile}>
+        <SaveBtn onClick={saveFile} aria-labelledby="saveText">
           <MdSaveAlt size={25} />
-          <SaveText>{supported ? language.saveBtn : language.export}</SaveText>
+          <SaveText id="saveText">
+            {supported ? language.saveBtn : language.export}
+          </SaveText>
         </SaveBtn>
       </Buttons>
     </Head>
