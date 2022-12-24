@@ -163,10 +163,10 @@ const SaveBtn = styled.button`
     padding: 0.5rem 1rem;
   }
   &:hover {
-    background-color: #e68050;
+    background-color: rgba(229, 102, 67, 0.9);
   }
   &:active {
-    background-color: #e68050;
+    background-color: rgba(229, 102, 67, 0.9);
     transform: translateY(1px);
   }
 `;
