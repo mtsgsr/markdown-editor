@@ -144,6 +144,7 @@ const Markdown = () => {
         <MdTextArea
           value={markdown}
           onChange={({ target }) => setMarkdown(target.value)}
+          aria-label="markdown"
         />
       </Section>
       <Aside
@@ -151,14 +152,14 @@ const Markdown = () => {
         default={visibility ? "none" : null}
       >
         <PrevHeading>
-          <HeadingText>
+          <HeadingText id="prevText">
             {lang === "pt-BR" ? "Visualizar" : "Preview"}
           </HeadingText>
           <Eye onClick={() => setVisibility(!visibility)}>
             <MdVisibilityOff size={25} />
           </Eye>
         </PrevHeading>
-        <Preview className="markdown-body">
+        <Preview className="markdown-body" aria-labelledby="prevText">
           <ReactMarkdown children={markdown} remarkPlugins={[remarkGfm]} />
         </Preview>
       </Aside>
