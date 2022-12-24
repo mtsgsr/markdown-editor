@@ -52,7 +52,7 @@ const HeadInfo = styled.div`
 
 const Wordmark = styled.h1`
   display: none;
-  color: ${({ theme }) => theme.accent};
+  color: ${({ theme }) => theme.title};
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
