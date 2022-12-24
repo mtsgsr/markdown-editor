@@ -152,14 +152,14 @@ const Markdown = () => {
         default={visibility ? "none" : null}
       >
         <PrevHeading>
-          <HeadingText id="prevText">
+          <HeadingText>
             {lang === "pt-BR" ? "Visualizar" : "Preview"}
           </HeadingText>
           <Eye onClick={() => setVisibility(!visibility)}>
             <MdVisibilityOff size={25} />
           </Eye>
         </PrevHeading>
-        <Preview className="markdown-body" aria-labelledby="prevText">
+        <Preview className="markdown-body">
           <ReactMarkdown children={markdown} remarkPlugins={[remarkGfm]} />
         </Preview>
       </Aside>
