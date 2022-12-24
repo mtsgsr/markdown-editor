@@ -2,6 +2,7 @@ import React from "react";
 import { MdDescription, MdDelete, MdSaveAlt } from "react-icons/md";
 import styled from "styled-components";
 import { FileContext } from "../context/FileContext";
+import { changeLang } from "../languages";
 
 const Head = styled.header`
   height: 60px;
@@ -51,7 +52,7 @@ const HeadInfo = styled.div`
 
 const Wordmark = styled.h1`
   display: none;
-  color: ${({ theme }) => theme.title};
+  color: ${({ theme }) => theme.accent};
   font-weight: bold;
   text-transform: uppercase;
   letter-spacing: 0.3rem;
@@ -189,6 +190,12 @@ const Header = () => {
     supported,
   } = React.useContext(FileContext);
 
+  const [language, setLanguage] = React.useState("");
+
+  React.useEffect(() => {
+    setLanguage(changeLang());
+  }, []);
+
   return (
     <Head>
       <MenuBtn onClick={openFile} />
@@ -197,7 +204,7 @@ const Header = () => {
         <Document>
           <MdDescription size={25} />
           <Description>
-            <Label id="docLabel">Document Name</Label>
+            <Label id="docLabel">{language.doc}</Label>
             {fileOpened === false || supported === false ? (
               <DocInput
                 value={fileName}
@@ -216,7 +223,7 @@ const Header = () => {
         </Trash>
         <SaveBtn onClick={saveFile}>
           <MdSaveAlt size={25} />
-          <SaveText>{supported ? "Save" : "Export"}</SaveText>
+          <SaveText>{supported ? language.saveBtn : language.export}</SaveText>
         </SaveBtn>
       </Buttons>
     </Head>
