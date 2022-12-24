@@ -5,6 +5,13 @@ import { lightTheme, darkTheme } from "./styles/themes";
 import { FileStorage } from "./context/FileContext";
 import Header from "./components/Header";
 import Markdown from "./components/Markdown";
+import { lang, changeLang } from "./languages";
+
+/* DEFINE LANGUAGE ON PAGE LOAD */
+if (typeof window !== "undefined") {
+  changeLang();
+}
+/* ----------------------- */
 
 function App() {
   const [theme, setTheme] = React.useState(lightTheme);
