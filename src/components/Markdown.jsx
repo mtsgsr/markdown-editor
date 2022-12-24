@@ -5,6 +5,7 @@ import remarkGfm from "remark-gfm";
 import "github-markdown-css";
 import { MdVisibility, MdVisibilityOff } from "react-icons/md";
 import { FileContext } from "../context/FileContext";
+import { lang } from "../languages";
 
 const Main = styled.main`
   display: grid;
@@ -150,7 +151,9 @@ const Markdown = () => {
         default={visibility ? "none" : null}
       >
         <PrevHeading>
-          <HeadingText>Preview</HeadingText>
+          <HeadingText>
+            {lang === "pt-BR" ? "Visualizar" : "Preview"}
+          </HeadingText>
           <Eye onClick={() => setVisibility(!visibility)}>
             <MdVisibilityOff size={25} />
           </Eye>
