@@ -191,6 +191,7 @@ const Header = () => {
   } = React.useContext(FileContext);
 
   const [language, setLanguage] = React.useState("");
+  const docInput = React.useRef();
 
   React.useEffect(() => {
     setLanguage(changeLang());
@@ -202,14 +203,15 @@ const Header = () => {
       <HeadInfo>
         <Wordmark>quick md</Wordmark>
         <Document>
-          <MdDescription size={25} />
+          <MdDescription size={25} onClick={() => docInput.current.focus()} />
           <Description>
-            <Label id="docLabel">{language.doc}</Label>
+            <Label htmlFor="docInput">{language.doc}</Label>
             {fileOpened === false || supported === false ? (
               <DocInput
                 value={fileName}
                 onChange={({ target }) => setFileName(target.value)}
-                aria-labelledby="docLabel"
+                id="docInput"
+                ref={docInput}
               />
             ) : (
               <Title>{fileName}</Title>
